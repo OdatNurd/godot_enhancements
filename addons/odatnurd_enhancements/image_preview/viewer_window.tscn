@@ -1,0 +1,119 @@
+[gd_scene format=3 uid="uid://dy7rw7x3dqtr2"]
+
+[ext_resource type="Script" uid="uid://c2vyno5ma0cg" path="res://addons/odatnurd_enhancements/image_preview/viewer_window.gd" id="1_ckrpd"]
+[ext_resource type="Shader" uid="uid://cosa0hx1q00o4" path="res://addons/odatnurd_enhancements/image_preview/viewer_window.gdshader" id="2_xj5lo"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0wehs"]
+shader = ExtResource("2_xj5lo")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_261dv"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.09985284, 0.09985284, 0.09985284, 0.8)
+
+[sub_resource type="DPITexture" id="DPITexture_o73er"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><circle cx=\"8\" cy=\"8\" r=\"8\" fill-opacity=\".4\"/><path fill=\"#e0e0e0\" d=\"M8 1a7 7 0 0 0 0 14A7 7 0 0 0 8 1zm0 3.166A1 1 0 0 1 9.526 5v7h-2V6.87l-1.445.962-1-1.6z\"/></svg>
+"
+saturation = 2.0
+
+[sub_resource type="DPITexture" id="DPITexture_2s356"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M3 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4l-3-3h-1v6H3zm1 0v5h3V1zm4 8a1 1 0 0 1 0 4 1 1 0 0 1 0-4z\"/></svg>
+"
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0wehs"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.09985284, 0.09985284, 0.09985284, 0.8)
+
+[node name="ViewerWindow" type="Window" unique_id=525641534]
+oversampling_override = 1.0
+title = "Texture Viewer"
+position = Vector2i(0, 36)
+size = Vector2i(800, 600)
+script = ExtResource("1_ckrpd")
+
+[node name="BgRect" type="ColorRect" parent="." unique_id=130649798]
+material = SubResource("ShaderMaterial_0wehs")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DrawControl" type="Control" parent="." unique_id=1290653366]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="TopPanel" type="PanelContainer" parent="." unique_id=1062345298]
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_261dv")
+
+[node name="TopHBox" type="HBoxContainer" parent="TopPanel" unique_id=130629151]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="FilterBtn" type="CheckButton" parent="TopPanel/TopHBox" unique_id=271413224]
+layout_mode = 2
+focus_mode = 0
+button_pressed = true
+text = "Pixel Art Mode"
+
+[node name="ZoomLabel" type="Label" parent="TopPanel/TopHBox" unique_id=304517147]
+layout_mode = 2
+text = "Zoom: 100%"
+
+[node name="ResetBtn" type="Button" parent="TopPanel/TopHBox" unique_id=392107605]
+layout_mode = 2
+text = "Reset Zoom"
+icon = SubResource("DPITexture_o73er")
+
+[node name="SaveBtn" type="Button" parent="TopPanel/TopHBox" unique_id=1775646391]
+layout_mode = 2
+text = "Save PNG"
+icon = SubResource("DPITexture_2s356")
+
+[node name="BotPanel" type="PanelContainer" parent="." unique_id=785095901]
+custom_minimum_size = Vector2(0, 40)
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0wehs")
+
+[node name="BotHBox" type="HBoxContainer" parent="BotPanel" unique_id=1668372792]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="CoordLabel" type="Label" parent="BotPanel/BotHBox" unique_id=602991881]
+layout_mode = 2
+text = "---"
+
+[node name="ColorLabel" type="Label" parent="BotPanel/BotHBox" unique_id=886772898]
+layout_mode = 2
+text = "Color: ---"
+
+[node name="HintLabel" type="Label" parent="BotPanel/BotHBox" unique_id=1383890398]
+modulate = Color(1, 1, 1, 0.5)
+layout_mode = 2
+text = "(Right-click to copy colour)"

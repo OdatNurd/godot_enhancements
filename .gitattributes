@@ -1,0 +1,14 @@
+# Normalize EOL for all files that Git considers text files.
+* text=auto eol=lf
+
+# Exclude files from git archive exports.
+.gitignore export-ignore
+.gitattributes export-ignore
+
+# This is used only in the channel file in the asset library
+icon.png export-ignore
+
+# These are in the root for GitHub purposes but having them in the archive
+# dumps them into the root of the project.
+README.md export-ignore
+LICENSE export-ignore
