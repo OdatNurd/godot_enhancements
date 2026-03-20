@@ -76,6 +76,12 @@ focus_mode = 0
 button_pressed = true
 text = "Pixel Art Mode"
 
+[node name="TileGridBtn" type="CheckButton" parent="TopPanel/TopHBox"]
+layout_mode = 2
+focus_mode = 0
+button_pressed = true
+text = "Tile Grid"
+
 [node name="ZoomLabel" type="Label" parent="TopPanel/TopHBox" unique_id=304517147]
 layout_mode = 2
 text = "Zoom: 100%"

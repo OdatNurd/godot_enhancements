@@ -5,6 +5,21 @@ extends Window
 # ------------------------------------------------------------------------------
 
 
+# The path within Editor Settings > General that our setting for enabling or
+# disabling the tile grid display lives.
+const SETTING_SHOW_TILE_GRID = "plugin/odatnurd_enhancements/show_tile_grid"
+
+# The path within Editor Settings > General that our setting for how big tiles
+# are lives.
+const SETTING_TILE_SIZE = "plugin/odatnurd_enhancements/tile_size"
+
+# A cached copy of the settings object.
+var _settings: EditorSettings
+
+
+# ------------------------------------------------------------------------------
+
+
 # This is the texture that is being inspected and that we are visualizing. This
 # is a property so that when we set its value we can set our window title to the
 # name of the resource.
@@ -48,6 +63,28 @@ var current_color: Color = Color.TRANSPARENT
 # Called when the node enters the scene tree for the first time. We use this to
 # hook up the signals from our UI scene and grab the dynamic editor icons.
 func _ready():
+    # Set up our Editor Settings.
+    _settings = EditorInterface.get_editor_settings()
+
+    # Include the setting for tile size, if it is not already present.
+    if not _settings.has_setting(SETTING_TILE_SIZE):
+        _settings.set_setting(SETTING_TILE_SIZE, 16)
+        _settings.set_initial_value(SETTING_TILE_SIZE, 16, true)
+        _settings.add_property_info({
+            "name": SETTING_TILE_SIZE,
+            "type": TYPE_INT
+        })
+
+    # Include the setting for whether or not to display the tile grid
+    # if it is not already present.
+    if not _settings.has_setting(SETTING_SHOW_TILE_GRID):
+        _settings.set_setting(SETTING_SHOW_TILE_GRID, true)
+        _settings.set_initial_value(SETTING_SHOW_TILE_GRID, true, true)
+        _settings.add_property_info({
+            "name": SETTING_SHOW_TILE_GRID,
+            "type": TYPE_BOOL
+        })
+
     # When the signal is received that there was a request to close the window,
     # discard the window.
     close_requested.connect(queue_free)
@@ -59,6 +96,13 @@ func _ready():
     # Connect the UI signals to our functions.
     $TopPanel/TopHBox/FilterBtn.toggled.connect(func(toggled_on):
         $DrawControl.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST if toggled_on else CanvasItem.TEXTURE_FILTER_LINEAR
+        $DrawControl.queue_redraw()
+    )
+
+    # When the toggle changes, alter the setting as well.
+    $TopPanel/TopHBox/TileGridBtn.button_pressed = _settings.get_setting(SETTING_SHOW_TILE_GRID)
+    $TopPanel/TopHBox/TileGridBtn.toggled.connect(func(toggled_on):
+        _settings.set_setting(SETTING_SHOW_TILE_GRID, toggled_on)
         $DrawControl.queue_redraw()
     )
 
@@ -350,8 +394,9 @@ func _on_draw():
     $DrawControl.draw_texture_rect(texture, Rect2(tex_pos, tex_size), false)
     $DrawControl.draw_rect(Rect2(tex_pos, tex_size), Color(1, 1, 1, 0.3), false, 1.0)
 
-    # If we are zoomed in enough, then we also want to display some grid lines. However since this can make the
-    # display a little busy, this only happens when the zoom is at least 800%; otherwise there might be too many
+    # If we are zoomed in enough, then we also want to display some grid lines.
+    # However since this can make the display a little busy, this only happens
+    # when the zoom is at least 800%; otherwise there might be too many
     # grid lines to display.
     if $DrawControl.texture_filter == CanvasItem.TEXTURE_FILTER_NEAREST and zoom >= 8.0:
         var grid_color = Color(1, 1, 1, 0.15)
@@ -365,6 +410,24 @@ func _on_draw():
         for y in range(texture.get_height() + 1):
             var y_pos = tex_pos.y + (y * zoom)
             $DrawControl.draw_line(Vector2(tex_pos.x, y_pos), Vector2(tex_pos.x + tex_size.x, y_pos), grid_color)
+
+    # Should we be drawing the tile grid?
+    if _settings.get_setting(SETTING_SHOW_TILE_GRID):
+        var tile_size: int = _settings.get_setting(SETTING_TILE_SIZE)
+
+        # Guard against a tile size of 0 or less to prevent infinite loops.
+        if tile_size > 0:
+            var tile_grid_color = Color(0, 1, 1, 0.5) # Distinct cyan color
+
+            # Draw vertical tile lines
+            for x in range(0, texture.get_width() + 1, tile_size):
+                var x_pos = tex_pos.x + (x * zoom)
+                $DrawControl.draw_line(Vector2(x_pos, tex_pos.y), Vector2(x_pos, tex_pos.y + tex_size.y), tile_grid_color)
+
+            # Draw horizontal tile lines
+            for y in range(0, texture.get_height() + 1, tile_size):
+                var y_pos = tex_pos.y + (y * zoom)
+                $DrawControl.draw_line(Vector2(tex_pos.x, y_pos), Vector2(tex_pos.x + tex_size.x, y_pos), tile_grid_color)
 
 
 # ------------------------------------------------------------------------------
