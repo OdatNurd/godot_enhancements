@@ -93,7 +93,7 @@ func handle_input(event: InputEvent) -> void:
 
     # If this was the enter key, then we might be inside of a comment, so if the
     # setting for reflowing comments is also turned on, dispatch.
-    if event.keycode == KEY_ENTER and _settings.get_setting(SETTING_AUTO_COMMENT):
+    if event.keycode in [KEY_ENTER, KEY_KP_ENTER] and _settings.get_setting(SETTING_AUTO_COMMENT):
         return _handle_auto_comment(editor, event as InputEventKey)
 
 
