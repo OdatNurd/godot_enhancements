@@ -7,8 +7,16 @@
 
 # This is used only in the channel file in the asset library
 icon.png export-ignore
+icon.png.import export-ignore
 
 # These are in the root for GitHub purposes but having them in the archive
 # dumps them into the root of the project.
 README.md export-ignore
 LICENSE export-ignore
+
+# The godot project file does not need to be includes
+project.godot export-ignore
+
+# The plugins that we have installed for development purposes never need to be
+# included in our archive.
+addons/script-ide/ export-ignore

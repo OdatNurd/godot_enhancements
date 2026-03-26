@@ -9,7 +9,7 @@ extends RefCounted
 # reflowing comments lives.
 const SHORTCUT_PATH = "odatnurd_enhancements/reflow_comment"
 
-# The path within Editor Settings > General that our setting for enabling or
+# The path within Editor Settings > Shortcuts that our keyboard shortcut for
 # disabling the auto comment feature lives.
 const SETTING_AUTO_COMMENT = "plugin/odatnurd_enhancements/enable_auto_comment"
 

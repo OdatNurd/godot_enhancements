@@ -17,26 +17,44 @@ me from going mildly insane when using its editor:
   includes a button above the preview.
 
 
-## Comments
+## Settings
 
-Pressing `enter` while the caret is inside of a comment should continue the
-comment onto the next line. To avoid this and go to the next line regardless,
-`ctrl+enter` will insert a blank line without continuing the comment.
+The plugin supports some simple settings and keybinds, which are all stored at:
+ * `Editor > Editor Settings > General > Plugin > Odatnurd Enhancements` for
+   settings
+ * `Editor > Editor Settings > Shortcuts > Odatnurd Enhancements` for keyboard
+   shortcuts.
 
-In `Editor > Editor Settings > General > Plugin > Odatnurd Enhancements` there
-is a setting that allows you to turn this functionality off should it not be
-desirable; the setting is enabled by default.
+See the below sections for the exciting content of these pages.
 
-In addition, in `Editor > Editor Settings > Shortcuts > Odatnurd Enhancements`
-you can bind `reflow_comment` to a key  (the default is `alt+q`).
 
-Pressing this key while inside of a comment will gather all of the preceding
-and following comment lines that share the same prefix as the line the caret is
-in and reflows them to fit within the defined ruler guidelines. Any lines in the
-comment that are otherwise blank (contain only the comment header) are preserved
-during the reflow to as to keep spacing properly set up.
+## Comment Enhancemeents
 
-The column used defaults to 80, but is set to either
+### Auto comment continuation
+
+Pressing `enter` while the editing caret is inside of a comment will continue
+the comment onto the next line. To avoid this and go to the next line
+regardless, `ctrl+enter` will insert a blank line without continuing the
+comment.
+
+The `Enable Auto Comment` setting controls whether or not this is active; it is
+turned on by default.
+
+
+### Comment Reflow
+
+Pressing the `reflow_comment` key (default is `alt+q`) while the caret is
+inside of a comment will reflow that comment to fit without the bounds of the
+designated column area.
+
+This works by scanning backwards and forwards from the line containing the
+comment that the caret is in, finding all comments that have the same comment
+prefix (`#`, `##`, etc) and then reflowing them.
+
+Comments that contain just white space and the comment prefix will be retained
+as blank lines in the reflow, so that paragraph spacing is not lost.
+
+The columne used to reflow defaults to `80` but is set to either
 `Line Length Guideline Soft Column` or `Line Length Guideline Hard Column`
 from `Editor Settings > General > Text Editor > Appearance`, depending on
 whether or not those settings are set.
@@ -66,3 +84,10 @@ Color(0.278, 0.549, 0.749, 1.000) # #478cbfff
 ```
 
 This allows you to use it directly as a color value, or gather just the hex.
+
+In addition, the plugin can display a tile grid as well on images, which is
+controlled by the `Tile Size` and `Show Tile Grid` settings (the latter of
+which also being available as a toggle control in the image previewer itself.)
+
+When the tile grid is turned on, the tile grid is always displayed, even at low
+zoom.
